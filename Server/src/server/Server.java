@@ -1,7 +1,7 @@
 package server;
 
 import java.net.*;
-import java.rmi.server.ExportException;
+
 import java.io.*;
 import java.util.*;
 import java.util.stream.*;
@@ -47,44 +47,60 @@ public class Server {
             System.out.println("Zakończona inicjalizacja strumieni...");
             System.out.println("Rozpoczęcie pętli głównej...");
             while (true) {
-                File f1=new File("users.txt");
+                File usersFile = new File("users.txt");
+                String filePath = "users.txt";
+                FileWriter fileWriter = null;
+
                 String login = "Podaj swój login";
                 out.writeBytes(login + '\n');
                 out.flush();
                 login = brinp.readLine();
+
+                try{
+                    fileWriter = new FileWriter(filePath);
+                    fileWriter.write(login);
+                } finally {
+                if (fileWriter != null) {
+                    fileWriter.close();
+                }
+            }
                 if ("Admin".equals(login)) {
                     String wtd = "Witaj w panelu administacyjnym. Co chcesz zrobić?";
                     out.writeBytes(wtd + '\n');
                     out.flush();
-                    wtd = brinp.readLine();
-//                    System.out.println(wtd);
+                    brinp.readLine();
 
                 } else {
                 String accnum = "Podaj nr.konta";
 //                out.writeBytes(accnum + '\n');
 //                out.flush();
 //                accnum = brinp.readLine();
-                String tast = "Co chcesz zrobic: 1. Sprawdzić stan konta 2. Wypłacić środki 3. Wpłacić środki  4. zrobić przelew ";
-                out.writeBytes(tast + '\n');
-                out.flush();
-                brinp.readLine();
 
-                String[] words=null;
-                FileReader fr = new FileReader(f1);
+                String tast = "Co chcesz zrobic: 1. Sprawdzić stan konta 2. Wypłacić środki 3. Wpłacić środki  4. zrobić przelew ";
+                System.out.println(tast);
+//                out.writeBytes(tast + '\n');
+//                out.flush();
+//                tast = brinp.readLine();
+
+                FileReader fr = new FileReader(usersFile);
                 BufferedReader br = new BufferedReader(fr);
                 FileWriter fstream = new FileWriter("TempFile.txt", true);
                 BufferedWriter save = new BufferedWriter(fstream);
 
                 Scanner sc = new Scanner(System.in);
                 int tastReply = sc.nextInt();
-                out.writeBytes(String.valueOf((tastReply) + '\n'));
-                out.flush();
-                brinp.readLine();
-                
-//                Scanner sc = new Scanner(System.in);
-//                int count = sc.nextInt();
-                    String s;
-                switch (tastReply) {
+//                out.writeBytes(String.valueOf((tastReply) + '\n'));
+//                out.flush();
+//
+//                Integer tastReply = null;
+
+//                out.writeBytes(String.valueOf((tastReply) + '\n'));
+//                out.flush();
+//                tastReply = brinp.readLine();
+                int count = 1;
+                String s;
+                String[] words;
+                switch (count) {
 
                     case 1: 
                         while ((s=br.readLine())!=null) {
