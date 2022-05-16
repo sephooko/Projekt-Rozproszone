@@ -94,7 +94,6 @@ public class Server {
                 String s;
                 String[] words;
                 switch (count) {
-
                     case 1: 
                         while ((s=br.readLine())!=null) {
                             words=s.split(" ");
@@ -118,7 +117,7 @@ public class Server {
                                     tmp = tmp + moneyT;
                                     words[4] = tmp;
                                 }
-                            
+
                             for (int i = 0; i < words.length; i++) {
                                 save.write(words[i] + " ");
                             }   
