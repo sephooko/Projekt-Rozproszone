@@ -55,8 +55,8 @@ public class Client {
         //Pętla główna klienta
         while (true) {
             try {
-                String lapanie = brSockInp.readLine();
-                System.out.println(lapanie);
+                String read = brSockInp.readLine();
+                System.out.println(read);
                 line = brLocalInp.readLine();
                 if (line != null) {
                     System.out.println("Wysyłam: " + line);
