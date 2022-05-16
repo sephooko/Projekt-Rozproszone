@@ -52,7 +52,7 @@ public class Server {
                 FileWriter fileWriter = null;
 
                 String login = "Podaj swój login";
-                out.writeBytes(login + '\n');
+                out.writeBytes(login + "\n\r");
                 out.flush();
                 login = brinp.readLine();
 
@@ -77,27 +77,20 @@ public class Server {
 //                accnum = brinp.readLine();
 
                 String tast = "Co chcesz zrobic: 1. Sprawdzić stan konta 2. Wypłacić środki 3. Wpłacić środki  4. zrobić przelew ";
-                System.out.println(tast);
-//                out.writeBytes(tast + '\n');
-//                out.flush();
-//                tast = brinp.readLine();
+                out.writeBytes(tast + "\n\r");
+                out.flush();
+                tast = brinp.readLine();
 
                 FileReader fr = new FileReader(usersFile);
                 BufferedReader br = new BufferedReader(fr);
                 FileWriter fstream = new FileWriter("TempFile.txt", true);
                 BufferedWriter save = new BufferedWriter(fstream);
 
-                Scanner sc = new Scanner(System.in);
-                int tastReply = sc.nextInt();
-//                out.writeBytes(String.valueOf((tastReply) + '\n'));
+                int tastReply = Integer.parseInt(tast);
+//                tastReply = brinp.read();
 //                out.flush();
-//
-//                Integer tastReply = null;
 
-//                out.writeBytes(String.valueOf((tastReply) + '\n'));
-//                out.flush();
-//                tastReply = brinp.readLine();
-                int count = 1;
+                int count = tastReply;
                 String s;
                 String[] words;
                 switch (count) {
