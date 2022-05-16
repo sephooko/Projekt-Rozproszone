@@ -3,6 +3,9 @@ package server;
 import java.net.*;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.*;
 import java.util.stream.*;
 
@@ -46,30 +49,80 @@ public class Server {
             }
             System.out.println("Zakończona inicjalizacja strumieni...");
             System.out.println("Rozpoczęcie pętli głównej...");
+            List mainList = new ArrayList<>();
+            File usersFile = new File("users.txt");
+            String filePath = "C:\\Users\\yello\\OneDrive\\Pulpit\\Projekt-szko-a-master\\Server\\src\\server\\users.txt";
+            FileWriter fileWriter = new FileWriter(usersFile);
+            BufferedReader fileReader = null;
+            Scanner fileScan = new Scanner(usersFile);
+            while(fileScan.hasNext()){
+                Dane tmp = new Dane();
+                tmp.accNum = fileScan.nextInt();
+                tmp.imie = fileScan.next();
+                tmp.nazwisko = fileScan.next();
+                tmp.pesel = fileScan.nextLong();
+                tmp.money = fileScan.nextInt();
+                mainList.add(tmp);
+            }
             while (true) {
-                File usersFile = new File("users.txt");
-                String filePath = "users.txt";
-                FileWriter fileWriter = null;
-
                 String login = "Podaj swój login";
                 out.writeBytes(login + "\n\r");
                 out.flush();
                 login = brinp.readLine();
-
                 try{
-                    fileWriter = new FileWriter(filePath);
-                    fileWriter.write(login);
+                    fileReader = new BufferedReader(new FileReader(filePath));
                 } finally {
-                if (fileWriter != null) {
-                    fileWriter.close();
+                if (fileReader != null) {
+                    fileReader.close();
                 }
             }
                 if ("Admin".equals(login)) {
-                    String wtd = "Witaj w panelu administacyjnym. Co chcesz zrobić?";
-                    out.writeBytes(wtd + '\n');
+                    String accNum = "Witaj w Terminalu Bankiera. Podaj numer konta, które chcesz modyfikować lub dodać.";
+                    out.writeBytes(accNum + "\n");
                     out.flush();
-                    brinp.readLine();
 
+                    BufferedReader br=new BufferedReader(new FileReader(filePath));
+                    String st = br.readLine();
+                    while(st.length()==0 && st!=null){
+                        st = br.readLine();
+                    }
+                    if (accNum.equals(st)){
+                        String accExist = "Konto istnieje.Wybierz:\n1.Aby zmienić imie. 2.Aby zmienic nazwisko. 3.Aby zmienic pesel.";
+                        out.writeBytes(accExist + "\n");
+                        out.flush();
+                        if("1".equals(accExist)){
+                            String oldName = "Wprowadx stare imie:";
+                            out.writeBytes(oldName + "\n");
+                            out.flush();
+                            for (int i = 0; i < mainList.size(); i++) {
+                                if (mainList.get(i).equals(oldName)) {
+                                    String newName = "Wprowadz nowe imie:";
+                                    out.writeBytes(oldName + "\n");
+                                    out.flush();
+                                    mainList.set(i, newName);
+                                    break;
+                                }
+                            }
+                            Files.write(Path.of(filePath), mainList, StandardCharsets.UTF_8);
+                        }
+                        else if ("2".equals(accExist)){
+
+                        }
+                        else if ("3".equals(accExist)){
+
+                        }
+                    } else {
+                        String accNExist = "Konto nie istnieje. Czy chcesz dodać nowe? [yes/no]";
+                        out.writeBytes(accNExist + "\n");
+                        out.flush();
+                        if ("yes".equals(accNExist)){
+
+
+                        }
+                        else {
+                            break;
+                        }
+                    }
                 } else {
                 String accnum = "Podaj nr.konta";
 //                out.writeBytes(accnum + '\n');
@@ -85,6 +138,7 @@ public class Server {
                 BufferedReader br = new BufferedReader(fr);
                 FileWriter fstream = new FileWriter("TempFile.txt", true);
                 BufferedWriter save = new BufferedWriter(fstream);
+                String moneyF = "Ile pieniędzy wpłacić?";
 
                 int tastReply = Integer.parseInt(tast);
 //                tastReply = brinp.read();
@@ -129,7 +183,7 @@ public class Server {
 
                     case 3:
 
-                    String moneyF = "Ile pieniędzy wpłacić?";
+
                     out.writeBytes(moneyF + '\n');
                     out.flush();
                     moneyF = brinp.readLine();
@@ -137,7 +191,7 @@ public class Server {
                         words=s.split(" ");
                             if (words[3].equals(accnum)){
                                 String tmp = words[4];
-                                tmp = tmp + moneyF;
+                                tmp = (tmp + moneyF);
                                 words[4] = tmp;
                             }
                         
@@ -151,36 +205,36 @@ public class Server {
                         break;
 
 
-//                    case 4:
-//
-//                    String przelew = "Ile pieniędzy przelać?";
-//                    out.writeBytes(przelew + '\n');
-//                    out.flush();
-//                    przelew = brinp.readLine();
-//                    String komu = "Ile pieniędzy przelać (nr.konta) ?";
-//                    out.writeBytes(komu + '\n');
-//                    out.flush();
-//                    komu = brinp.readLine();
-//                    while ((s=br.readLine())!=null) {
-//                        words=s.split(" ");
-//                        if (words[3].equals(accnum)){
-//                            String tmp = words[4];
-//                            tmp = tmp + moneyF;
-//                            words[4] = tmp;
-//                        }
-//                        else if (words[3].equals(komu)) {
-//                            String tmp = words[4];
-//                            tmp = tmp + moneyF;
-//                            words[4] = tmp;
-//                        }
-//
-//                    for (int i = 0; i < words.length; i++) {
-//                        save.write(words[i] + " ");
-//                        }
-//                    }
-//                    save.flush();
-//                    save.close();
-//                        break;
+                    case 4:
+
+                    String przelew = "Ile pieniędzy przelać?";
+                    out.writeBytes(przelew + '\n');
+                    out.flush();
+                    przelew = brinp.readLine();
+                    String komu = "Ile pieniędzy przelać (nr.konta) ?";
+                    out.writeBytes(komu + '\n');
+                    out.flush();
+                    komu = brinp.readLine();
+                    while ((s=br.readLine())!=null) {
+                        words=s.split(" ");
+                        if (words[3].equals(accnum)){
+                            String tmp = words[4];
+                            tmp = tmp + moneyF;
+                            words[4] = tmp;
+                        }
+                        else if (words[3].equals(komu)) {
+                            String tmp = words[4];
+                            tmp = tmp + moneyF;
+                            words[4] = tmp;
+                        }
+
+                    for (int i = 0; i < words.length; i++) {
+                        save.write(words[i] + " ");
+                        }
+                    }
+                    save.flush();
+                    save.close();
+                        break;
 
                     default:
                         String info = "Nie wybrano poprawnej operacji";
